@@ -29,7 +29,7 @@ var all=landsat4
   return all
 }
 
-exports.ModernLandsat= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+exports.NewLandsat= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
 var landsat8=exports.landsat8(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
 var landsat9=exports.landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
 
