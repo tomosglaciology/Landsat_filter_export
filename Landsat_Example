@@ -1,0 +1,29 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var geometry = 
+    /* color: #d63000 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[-73.65102255169843, -48.59161279294259],
+          [-73.65102255169843, -49.24855038507996],
+          [-71.92891561810468, -49.24855038507996],
+          [-71.92891561810468, -48.59161279294259]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+var funcs = require('users/tomosdanielmorgan/EarthObservation:Landsats');
+
+var all = funcs.allLandsat(geometry, 10, 10, 2020, 2024, 1, 2, 1, 31)
+//  .filter(ee.Filter.eq('WRS_PATH', 218))
+//  .filter(ee.Filter.eq('WRS_ROW', 3))
+  .select(['B[2-7]', 'B10'])
+  
+print(all);
+
+Map.centerObject(geometry, 10);
+
+var NIR = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_231094_20210130').clip(geometry)
+Map.addLayer(NIR, {bands: ['B5', 'B4', 'B3'], min: 0, max: 0.6}, 'false colour');
+
