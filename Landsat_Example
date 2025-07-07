@@ -13,17 +13,23 @@ var geometry =
           [-71.92891561810468, -49.24855038507996],
           [-71.92891561810468, -48.59161279294259]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
+// Calls the function 
 var funcs = require('users/tomosdanielmorgan/EarthObservation:Landsats');
-
+// Defines the image collection
+// Calls allLandsat
+// Calls the geometry, CLOUD_COVER, CLOUD_COVER_LAND, Year1, Year2, Month1, Month2, Day1, Day2.
 var all = funcs.allLandsat(geometry, 10, 10, 2020, 2024, 1, 2, 1, 31)
-//  .filter(ee.Filter.eq('WRS_PATH', 218))
-//  .filter(ee.Filter.eq('WRS_ROW', 3))
+// Filters the WRS_PATH and WRS_ROW. // If not required.
+  .filter(ee.Filter.eq('WRS_PATH', 231))
+  .filter(ee.Filter.eq('WRS_ROW', 94))
+// Selects B2-B7 and B10 which have been renamed for all Landsat 5-7 to match Landsat 8-9.
   .select(['B[2-7]', 'B10'])
-  
+// Prints image collection
 print(all);
-
+// Centers the geometry
 Map.centerObject(geometry, 10);
-
+// Calls the image to be clipped to the geometry.
 var NIR = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_231094_20210130').clip(geometry)
+//Adds the image as a map layer and is displayed as a false colour composite.
 Map.addLayer(NIR, {bands: ['B5', 'B4', 'B3'], min: 0, max: 0.6}, 'false colour');
 
