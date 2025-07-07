@@ -1,0 +1,222 @@
+var tools = require('users/robertmcnabb/egm702:libraries/tools.js');
+
+//Functioning satellites
+exports.allLandsat= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+var landsat4=exports.landsat4(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var landsat5=exports.landsat5(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var landsat7=exports.landsat7(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var landsat8=exports.landsat8(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var landsat9=exports.landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+
+var all=landsat4
+  .merge(landsat5)
+  .merge(landsat7)
+  .merge(landsat8)
+  .merge(landsat9)
+  .sort('system:time_start');
+  return all
+}
+  
+exports.EarlyLandsat= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+var landsat4=exports.landsat4(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var landsat5=exports.landsat5(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var landsat7=exports.landsat7(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+
+var all=landsat4
+  .merge(landsat5)
+  .merge(landsat7)
+  .sort('system:time_start');
+  return all
+}
+
+exports.ModernLandsat= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+var landsat8=exports.landsat8(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var landsat9=exports.landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+
+var all=landsat8
+  .merge(landsat9)
+  .sort('system:time_start');
+  return all
+}
+
+exports.Landsats9= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+var landsat9=exports.landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+
+var all=landsat9
+  .sort('system:time_start');
+  return all
+}
+
+exports.landsat4 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+  if (allCloud === undefined || allCloud === null){ allCloud = 20 }
+  if (landCloud === undefined || landCloud === null){ landCloud = 20 }
+  if (year1 === undefined || year1 === null){year1 = 1982 }
+  if (year2 === undefined || year2 === null){year2 = year1 }
+  if (month1 === undefined || month1 === null){month1 = 01-12 }
+  if (month2 === undefined || month2 === null){month2 = month1 }
+  if (day1 === undefined || day1 === null) { day1 = 1; }
+  if (day2 === undefined || day2 === null) { day2 = 31; }
+  //Define image collection
+var imgs = ee.ImageCollection("LANDSAT/LT04/C02/T1_TOA") 
+    //filter based on the geometry
+  .filterBounds(geometry)
+    //filter with cloud cover
+  .filterMetadata('CLOUD_COVER','less_than',allCloud)
+  .filterMetadata('CLOUD_COVER_LAND','less_than',landCloud)
+    //Filter dates
+    //.filterDate(year1,'1993-11-18')
+    //Filter years
+  .filter(ee.Filter.calendarRange(year1, year2, 'year'))
+    //filter months
+  .filter(ee.Filter.calendarRange(month1, month2, 'month'))
+  .filter(ee.Filter.calendarRange(day1, day2, 'DAY_OF_MONTH'))
+  .map(function(image){
+    
+  return image
+  .select(['B1', 'B2', 'B3', 'B4', 'B5', 'B7','B6'])
+  .rename(['B2', 'B3', 'B4', 'B5', 'B6', 'B7','B10']);
+})
+  
+  // Return the image collection
+  return imgs;
+}
+
+exports.landsat5 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+  if (allCloud === undefined || allCloud === null){ allCloud = 20 }
+  if (landCloud === undefined || landCloud === null){ landCloud = 20 }
+  if (year1 === undefined || year1 === null){year1 = 1984 }
+  if (year2 === undefined || year2 === null){year2 = year1 }
+  if (month1 === undefined || month1 === null){month1 = 01-12 }
+  if (month2 === undefined || month2 === null){month2 = month1 }
+  if (day1 === undefined || day1 === null) { day1 = 1; }
+  if (day2 === undefined || day2 === null) { day2 = 31; }
+  //Define image collection
+var imgs = ee.ImageCollection("LANDSAT/LT05/C02/T1_TOA") 
+    //filter based on the geometry
+  .filterBounds(geometry)
+    //filter with cloud cover
+  .filterMetadata('CLOUD_COVER','less_than',allCloud)
+  .filterMetadata('CLOUD_COVER_LAND','less_than',landCloud)
+    //Filter years
+  .filter(ee.Filter.calendarRange(year1, year2, 'year'))
+    //Filter months
+  .filter(ee.Filter.calendarRange(month1, month2, 'month'))
+  .filter(ee.Filter.calendarRange(day1, day2, 'DAY_OF_MONTH'))    
+  .map(function(image){
+    
+  return image
+  .select(['B1', 'B2', 'B3', 'B4', 'B5', 'B7','B6','QA_PIXEL'])
+  .rename(['B2', 'B3', 'B4', 'B5', 'B6', 'B7','B10','QA_PIXEL']);
+})
+
+  // Return the image collection
+  return imgs;
+}
+
+exports.landsat7 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+  if (allCloud === undefined || allCloud === null){ allCloud = 20 }
+  if (landCloud === undefined || landCloud === null){ landCloud = 20 }
+  if (year1 === undefined || year1 === null){year1 = 1982 }
+  if (year2 === undefined || year2 === null){year2 = year1 }
+  if (month1 === undefined || month1 === null){month1 = 01-12 }
+  if (month2 === undefined || month2 === null){month2 = month1 }
+  if (day1 === undefined || day1 === null) { day1 = 1; }
+  if (day2 === undefined || day2 === null) { day2 = 31 }
+  //Define image collection
+var imgs = ee.ImageCollection('LANDSAT/LE07/C02/T1_TOA') 
+    //filter based on the geometry
+  .filterBounds(geometry)
+    //filter with cloud cover
+  .filterMetadata('CLOUD_COVER','less_than',allCloud)
+  .filterMetadata('CLOUD_COVER_LAND','less_than',landCloud)
+    //filter months
+  .filter(ee.Filter.calendarRange(year1, year2, 'year'))
+    //Filter months
+  .filter(ee.Filter.calendarRange(month1, month2, 'month'))
+  .filter(ee.Filter.calendarRange(day1, day2, 'DAY_OF_MONTH'))
+  .map(function(image){
+    
+  return image
+  .select(['B1', 'B2', 'B3', 'B4', 'B5', 'B7','B6_VCID_1','QA_PIXEL'])
+  .rename(['B2', 'B3', 'B4', 'B5', 'B6', 'B7','B10','QA_PIXEL']);
+})
+  // Return the image collection
+  return imgs;
+}
+
+exports.landsat8 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+  if (allCloud === undefined || allCloud === null){ allCloud = 20 }
+  if (landCloud === undefined || landCloud === null){ landCloud = 20 }
+  if (year1 === undefined || year1 === null){year1 = 1982 }
+  if (year2 === undefined || year2 === null){year2 = year1 }
+  if (month1 === undefined || month1 === null){month1 = 01-12 }
+  if (month2 === undefined || month2 === null){month2 = month1 }
+  if (day1 === undefined || day1 === null) { day1 = 1; }
+  if (day2 === undefined || day2 === null) { day2 = 31; }
+  //Define image collection
+var imgs = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA') 
+    //filter based on the geometry
+  .filterBounds(geometry)
+    //filter with cloud cover
+  .filterMetadata('CLOUD_COVER','less_than',allCloud)
+  .filterMetadata('CLOUD_COVER_LAND','less_than',landCloud)
+    //filter months
+  .filter(ee.Filter.calendarRange(year1, year2, 'year'))
+  .filter(ee.Filter.calendarRange(month1, month2, 'month'))
+  .filter(ee.Filter.calendarRange(day1, day2, 'DAY_OF_MONTH'))
+    //Filter months
+  // Return the image collection
+  return imgs;
+}
+
+exports.landsat9 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+  if (allCloud === undefined || allCloud === null){ allCloud = 20 }
+  if (landCloud === undefined || landCloud === null){ landCloud = 20 }
+  if (year1 === undefined || year1 === null){year1 = 1982 }
+  if (year2 === undefined || year2 === null){year2 = year1 }
+  if (month1 === undefined || month1 === null){month1 = 01-12 }
+  if (month2 === undefined || month2 === null){month2 = month1 }
+  if (day1 === undefined || day1 === null) { day1 = 1; }
+  if (day2 === undefined || day2 === null) { day2 = 31; }
+
+  //Define image collection
+var imgs = ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA') 
+    //filter based on the geometry
+  .filterBounds(geometry)
+    //filter with cloud cover
+  .filterMetadata('CLOUD_COVER','less_than',allCloud)
+  .filterMetadata('CLOUD_COVER_LAND','less_than',landCloud)
+    //Filter years
+  .filter(ee.Filter.calendarRange(year1, year2, 'year'))
+  .filter(ee.Filter.calendarRange(month1, month2, 'month'))
+  .filter(ee.Filter.calendarRange(day1, day2, 'DAY_OF_MONTH'))
+    //Filter months
+  // Return the image collection
+  return imgs;
+}
+
+exports.landsat9 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+  if (allCloud === undefined || allCloud === null){ allCloud = 20 }
+  if (landCloud === undefined || landCloud === null){ landCloud = 20 }
+  if (year1 === undefined || year1 === null){year1 = 1982 }
+  if (year2 === undefined || year2 === null){year2 = year1 }
+  if (month1 === undefined || month1 === null){month1 = 01-12 }
+  if (month2 === undefined || month2 === null){month2 = month1 }
+  if (day1 === undefined || day1 === null) { day1 = 1; }
+  if (day2 === undefined || day2 === null) { day2 = 31; }
+
+  //Define image collection
+var imgs = ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA') 
+    //filter based on the geometry
+  .filterBounds(geometry)
+    //filter with cloud cover
+  .filterMetadata('CLOUD_COVER','less_than',allCloud)
+  .filterMetadata('CLOUD_COVER_LAND','less_than',landCloud)
+    //Filter years
+  .filter(ee.Filter.calendarRange(year1, year2, 'year'))
+  .filter(ee.Filter.calendarRange(month1, month2, 'month'))
+  .filter(ee.Filter.calendarRange(day1, day2, 'DAY_OF_MONTH'))
+    //Filter months
+  // Return the image collection
+  return imgs;
+}
