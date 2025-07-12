@@ -1,0 +1,17 @@
+// Calls Landsat image function 
+var funcs = require('users/tomosdanielmorgan/EarthObservation:Sentinel-2');
+// Defines the image collection
+// Calls allLandsat
+// Calls the geometry, CLOUD_COVER, CLOUD_COVER_LAND, Year1, Year2, Month1, Month2, Day1, Day2.
+// funcs.allLandsat filters images from Landsat 4-9.
+// funcs.EarlyLandsat filters images from Landsat 4-7.
+// funcs.NewLandsat filters images from Landsat 8-9.
+// Individual satellites can be called by using funcs.landsat and adding the number of specified satellite at the end. 
+var Sentinel = funcs.allSentinel(Peter, 2, 2023, 2023, 1, 12)
+//  .filter(ee.Filter.inList('MGRS_TILE', tiles))
+  .map(function(image){return image.clip(Peter)})
+  .select('B2','B3','B4','B8','B8A','B11')
+print(Sentinel)
+  
+Map.centerObject(Peter,  10)
+  
