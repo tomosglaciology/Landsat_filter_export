@@ -13,35 +13,35 @@ var geometry =
           [-71.92891561810468, -49.24855038507996],
           [-71.92891561810468, -48.59161279294259]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
-// Calls Landsat image function 
+// Import Landsat image filter function
 var funcs = require('users/tomosdanielmorgan/EarthObservation:Landsats');
-// Defines the image collection
-// Calls allLandsat
-// Calls the geometry, CLOUD_COVER, CLOUD_COVER_LAND, Year1, Year2, Month1, Month2, Day1, Day2.
-// funcs.allLandsat filters images from Landsat 4-9.
-// funcs.EarlyLandsat filters images from Landsat 4-7.
-// funcs.NewLandsat filters images from Landsat 8-9.
-// Individual satellites can be called by using funcs.landsat and adding the number of specified satellite at the end. 
-var all = funcs.allLandsat(geometry, 10, 10, 2020, 2024, 1, 2, 1, 31)
-// Filters the WRS_yPATH and WRS_ROW. // If not required.
-  .filter(ee.Filter.eq('WRS_PATH', 231))
-  .filter(ee.Filter.eq('WRS_ROW', 94))
-// Selects B2-B7 and B10 which have been renamed for all Landsat 5-7 to match Landsat 8-9.
-  .select(['B[2-7]', 'B10'])
-  
-// Prints image collection
+
+// Load Landsat 4–9 image collection using filters:
+// geometry, cloud cover thresholds, and date range (2020-2024, January to February, 1st-28th)
+// Change funcs. based on your requirements (see README.md file)
+var all = funcs.allLandsat(geometry, 10, 10, 2020, 2024, 1, 2, 1, 28)
+  // Optional: filter by WRS path and row  remove // if known or use WRS_PATH and WRS_ROW after printing the ImageCollection
+  //.filter(ee.Filter.eq('WRS_PATH', 231))
+  //.filter(ee.Filter.eq('WRS_ROW', 94))
+  // Select bands B2–B7 and B10, Common bands renamed across Landsat 4-9 to match.
+  .select(['B[2-7]', 'B10']);
+
+// Print image collection 
 print(all);
 
-// Centers the geometry
+// Center the map on the geometry
 Map.centerObject(geometry, 10);
 
-// Calls the image to be clipped to the geometry.
-var NIR = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_231094_20210130').clip(geometry)
+// Load and clip a sample Landsat 8 image to the geometry from the ImageCollection >>
+var example = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_231094_20210130').clip(geometry);
 
-//Adds the image as a map layer and is displayed as a false colour composite.
-Map.addLayer(NIR, {bands: ['B5', 'B4', 'B3'], min: 0, max: 0.6}, 'false colour');
+// Add false color composite to map (NIR, Red, Green)
+Map.addLayer(example, {bands: ['B5', 'B4', 'B3'], min: 0, max: 0.6}, 'False Colour');
 
-// Calls image collection batch function
+// Add true color composite to map (Red, Green, Blue)
+Map.addLayer(example, {bands: ['B4', 'B3', 'B2'], min: 0, max: 0.6}, 'True Colour');
+
+// Import geetools batch module and export image collection to Google Drive
 var batches = require('users/fitoprincipe/geetools:batch');
 batches.Download.ImageCollection.toDrive(all, 'Landsat_Example', {
   scale: 30,
@@ -49,4 +49,3 @@ batches.Download.ImageCollection.toDrive(all, 'Landsat_Example', {
   maxPixels: 1e13,
   region: geometry
 });
-
