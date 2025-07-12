@@ -33,8 +33,8 @@ exports.NewLandsat= function (geometry,allCloud,landCloud, year1, year2, month1,
 var Landsat8=exports.Landsat8(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
 var Landsat9=exports.Landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
 
-var all=landsat8
-  .merge(landsat9)
+var all=Landsat8
+  .merge(Landsat9)
   .sort('system:time_start');
   return all
 }
