@@ -1,0 +1,36 @@
+exports.allSentinel = function (geometry,allCloud, year1, year2, month1, month2, day1, day2) {
+
+var sentinel2 = exports.sentinel2 (geometry,allCloud, year1, year2, month1, month2, day1, day2)      
+
+var all = sentinel2
+  .sort('system:time_start');
+  return all
+}
+
+exports.sentinel2 = function (geometry,allCloud, year1, year2, month1, month2, day1, day2) {
+  if (allCloud === undefined || allCloud === null){ allCloud = 20 }
+  if (year1 === undefined || year1 === null){year1 = 2017 }
+  if (year2 === undefined || year2 === null){year2 = year1 }
+  if (month1 === undefined || month1 === null){month1 = 01-12 }
+  if (month2 === undefined || month2 === null){month2 = month1 }
+  if (day1 === undefined || day1 === null) { day1 = 1; }
+  if (day2 === undefined || day2 === null) { day2 = 31; }
+  
+      // Defines the image collection
+var imColl=ee.ImageCollection('COPERNICUS/S2_HARMONIZED')
+      // Filters based on geometry
+  .filterBounds(geometry)
+      // Filters based on cloud cover
+  .filterMetadata('CLOUDY_PIXEL_PERCENTAGE','less_than',allCloud)
+      // Filters dates
+//  .filterDate('2015-07-01','2022-04-11')
+      // Filters years
+  .filter(ee.Filter.calendarRange(year1, year2, 'year'))
+      // Filters months
+  .filter(ee.Filter.calendarRange(month1, month2, 'month'))
+  .filter(ee.Filter.calendarRange(day1, day2, 'DAY_OF_MONTH'))
+  .select('B2', 'B3', 'B4', 'B8', 'B11', 'B12')
+
+      // Returns the image collection
+  return imColl;
+      }
