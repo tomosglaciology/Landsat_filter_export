@@ -47,7 +47,7 @@ var all=landsat9
   return all
 }
 
-exports.landsat4 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+exports.Landsat4 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
   if (allCloud === undefined || allCloud === null){ allCloud = 20 }
   if (landCloud === undefined || landCloud === null){ landCloud = 20 }
   if (year1 === undefined || year1 === null){year1 = 1982 }
@@ -81,7 +81,7 @@ var imgs = ee.ImageCollection("LANDSAT/LT04/C02/T1_TOA")
   return imgs;
 }
 
-exports.landsat5 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+exports.Landsat5 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
   if (allCloud === undefined || allCloud === null){ allCloud = 20 }
   if (landCloud === undefined || landCloud === null){ landCloud = 20 }
   if (year1 === undefined || year1 === null){year1 = 1984 }
@@ -113,7 +113,7 @@ var imgs = ee.ImageCollection("LANDSAT/LT05/C02/T1_TOA")
   return imgs;
 }
 
-exports.landsat7 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+exports.Landsat7 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
   if (allCloud === undefined || allCloud === null){ allCloud = 20 }
   if (landCloud === undefined || landCloud === null){ landCloud = 20 }
   if (year1 === undefined || year1 === null){year1 = 1982 }
@@ -144,7 +144,7 @@ var imgs = ee.ImageCollection('LANDSAT/LE07/C02/T1_TOA')
   return imgs;
 }
 
-exports.landsat8 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+exports.Landsat8 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
   if (allCloud === undefined || allCloud === null){ allCloud = 20 }
   if (landCloud === undefined || landCloud === null){ landCloud = 20 }
   if (year1 === undefined || year1 === null){year1 = 1982 }
@@ -169,7 +169,7 @@ var imgs = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
   return imgs;
 }
 
-exports.landsat9 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+exports.Landsat9 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
   if (allCloud === undefined || allCloud === null){ allCloud = 20 }
   if (landCloud === undefined || landCloud === null){ landCloud = 20 }
   if (year1 === undefined || year1 === null){year1 = 1982 }
@@ -195,7 +195,7 @@ var imgs = ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA')
   return imgs;
 }
 
-exports.landsat9 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
+exports.Landsat9 = function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
   if (allCloud === undefined || allCloud === null){ allCloud = 20 }
   if (landCloud === undefined || landCloud === null){ landCloud = 20 }
   if (year1 === undefined || year1 === null){year1 = 1982 }
