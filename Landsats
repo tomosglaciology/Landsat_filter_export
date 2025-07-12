@@ -2,11 +2,11 @@ var tools = require('users/robertmcnabb/egm702:libraries/tools.js');
 
 //Functioning satellites
 exports.allLandsat= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
-var Landsat4=exports.landsat4(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
-var Landsat5=exports.landsat5(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
-var Landsat7=exports.landsat7(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
-var Landsat8=exports.landsat8(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
-var Landsat9=exports.landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat4=exports.Landsat4(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat5=exports.Landsat5(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat7=exports.Landsat7(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat8=exports.Landsat8(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat9=exports.Landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
 
 var all=Landsat4
   .merge(Landsat5)
@@ -18,9 +18,9 @@ var all=Landsat4
 }
   
 exports.EarlyLandsat= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
-var Landsat4=exports.landsat4(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
-var Landsat5=exports.landsat5(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
-var Landsat7=exports.landsat7(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat4=exports.Landsat4(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat5=exports.Landsat5(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat7=exports.Landsat7(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
 
 var all=Landsat4
   .merge(Landsat5)
@@ -30,8 +30,8 @@ var all=Landsat4
 }
 
 exports.NewLandsat= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
-var Landsat8=exports.landsat8(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
-var Landsat9=exports.landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat8=exports.Landsat8(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var Landsat9=exports.Landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
 
 var all=landsat8
   .merge(landsat9)
@@ -40,7 +40,7 @@ var all=landsat8
 }
 
 exports.Landsats9= function (geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2) {
-var landsat9=exports.landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
+var landsat9=exports.Landsat9(geometry,allCloud,landCloud, year1, year2, month1, month2, day1, day2)
 
 var all=Landsat9
   .sort('system:time_start');
