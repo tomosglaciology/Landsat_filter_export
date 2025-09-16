@@ -2428,7 +2428,10 @@ var geometry =
               "landcover": 4,
               "system:index": "99"
             })]),
-    dark = /* color: #bf04c2 */ee.FeatureCollection(
+    dark = 
+    /* color: #bf04c2 */
+    /* shown: false */
+    ee.FeatureCollection(
         [ee.Feature(
             ee.Geometry.Point([-16.736849801822398, 64.86942144991252]),
             {
@@ -3054,7 +3057,20 @@ var slope = ee.Terrain.slope(dem)
 
 var aspect = ee.Terrain.aspect(dem)
 
-return image.addBands([hillshade,ndvi,mndwi,slope]);
+// AWEI_nsh for Sentinel-2 (Feyisa et al., 2014)
+// Formula: 4*(G - SWIR1) - (0.25*NIR + 2.75*SWIR2)
+var awei_nsh = image.expression(
+  '4*(G - S1) - (0.25*N + 2.75*S2)',
+  {
+    G:  image.select('B3'),   // Green
+    S1: image.select('B11'),  // SWIR1
+    N:  image.select('B8'),   // NIR
+    S2: image.select('B12')   // SWIR2
+  }
+).rename('AWEI_nsh');
+
+
+return image.addBands([hillshade,awei_nsh, mndwi, ndvi, slope]);
 }
 
 
