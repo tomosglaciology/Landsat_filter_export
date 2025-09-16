@@ -1,0 +1,131 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var geometry = 
+    /* color: #d63000 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[-16.630382935599044, 64.19422242406],
+          [-16.630382935599044, 63.936566221106716],
+          [-15.972576539114668, 63.936566221106716],
+          [-15.972576539114668, 64.19422242406]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+var funcs = require('users/tomosdanielmorgan/ProgrammingFunctions:Sentinels');
+var segtools = require('users/tomosdanielmorgan/Sentinel2_OBIA:SegmentationClassification_Sentinel2');
+var training_class = require('users/tomosdanielmorgan/Sentinel2_OBIA:TrainedClassifier_Sentinel2');
+var applying_class = require('users/tomosdanielmorgan/Sentinel2_OBIA:ApplyingClassifier_Sentinel2');
+var batch = require('users/fitoprincipe/geetools:batch')
+
+function addIndices(image) {
+var mndwi = image.normalizedDifference(['B3', 'B11']).rename('MNDWI');
+
+var ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');  
+
+var azimuth = ee.Number(image.get('MEAN_SOLAR_AZIMUTH_ANGLE'));  
+
+var elevation = ee.Number(image.get('MEAN_SOLAR_ZENITH_ANGLE'));  
+
+var dem = ee.Image("projects/ee-landmaelingar/assets/IslandsDEMv1_10m_isn93").clip(image.geometry());
+
+var hillshade = ee.Terrain.hillshade(dem, azimuth, elevation)
+                  .rename('Hillshade');
+                  
+var slope = ee.Terrain.slope(dem)
+
+var aspect = ee.Terrain.aspect(dem)
+
+return image.addBands([hillshade,ndvi,mndwi,slope]);
+}
+
+
+var all = funcs.allSentinel(geometry, 5, 2024, 2024, 6, 6, 1, 31)
+//  .filter(ee.Filter.eq('MGRS_TILE', '33XVJ'))
+//  .map(function(image){return image.clip(training)})
+  .select('B2', 'B3', 'B4', 'B8', 'B11', 'B12')
+  .map(addIndices)
+
+  print(all)
+Map.centerObject(geometry, 11.5);
+
+var ROI= ee.Image('COPERNICUS/S2_HARMONIZED/20240614T125311_20240614T125306_T28WDS').divide(10000)
+Map.addLayer(ROI.first(ROI).select('B8','B4','B3'),{min:0,max:0.4},'InspectionImage')
+
+var image = addIndices(ee.Image('COPERNICUS/S2_HARMONIZED/20220821T132719_20220821T132718_T33XVJ').select(['B2', 'B3', 'B4', 'B8', 'B11', 'B12']));
+
+var imageCluster = segtools.segment(image);
+imageCluster = imageCluster.reproject({
+  scale: 10, 
+  crs: 'EPSG:25833', 
+});
+
+Map.addLayer(imageCluster, {bands: ['id']}, 'clusters');
+
+var vectors = imageCluster.select('id').reduceToVectors({
+  geometryType: 'polygon',
+  reducer: ee.Reducer.countEvery(),
+  scale: 10,
+  maxPixels: 1e13,
+});
+
+var empty = ee.Image().byte();
+var outline = empty.paint({
+  featureCollection: vectors,
+  color: 1,
+  width: 1
+});
+//Map.addLayer(outline, {palette: 'white'}, 'segments', false);
+
+var trainingPoints = water
+  .merge(ice)
+  .merge(vegetation)
+  .merge(shadow)
+  .merge(bare)
+
+var classifier = training_class.train_classifier(image, trainingPoints, 100);
+print('Trained classifier:', classifier);
+
+var classifierExplanation = classifier.explain();
+print('Classifier explanation:', classifierExplanation);
+
+var featureImportance = ee.Dictionary(classifierExplanation).get('importance');
+print('Feature Importance:', featureImportance);
+
+var img_seg = all.map(segtools.segment);
+var glcm = img_seg.map(segtools.glcm_bands);
+var reducing = glcm.map(segtools.reduce_bands);
+
+var classifier_applied = applying_class.applying_classifier(classifier);
+print(classifier_applied);
+
+var Obia_collection = reducing.map(classifier_applied);
+print(Obia_collection);
+
+//Map.addLayer(Obia_collection, {bands: ['classification'], min: 1, max: 6}, 'ClassifiedImage');
+
+//Map.addLayer(LakeTerm, {}, 'LakeTermGlaciers');
+Map.addLayer(Obia_collection, {bands: ['classification'], min: 1, max: 2}, 'ClassifiedImage');
+
+var visParams = {
+  min: 1, 
+  max: 2, 
+  palette: ['blue', 'white'] 
+};
+
+var batch = require('users/fitoprincipe/geetools:batch');
+batch.Download.ImageCollection.toDrive(Obia_collection, 'SegParams', {
+  scale: 10,
+  crs: 'EPSG:25833',
+  maxPixels: 1e13,
+  region: area
+});
+
+var importanceFC = ee.Feature(null, featureImportance);
+Export.table.toDrive({
+  collection: ee.FeatureCollection([importanceFC]),
+  description: 'Feature_Importance_Export',
+  fileFormat: 'CSV'
+});
+
