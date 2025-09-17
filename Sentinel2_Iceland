@@ -3820,7 +3820,7 @@ var awei_nsh = image.expression(
 ).rename('AWEI_nsh');
 
 
-return image.addBands([hillshade,awei_nsh, mndwi, ndvi, slope]);
+return image.addBands([hillshade, mndwi, ndvi, slope]);
 }
 
 
