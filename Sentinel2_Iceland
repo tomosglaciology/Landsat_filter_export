@@ -4828,7 +4828,10 @@ var geometry =
               "landcover": 4,
               "system:index": "199"
             })]),
-    dark = /* color: #bf04c2 */ee.FeatureCollection(
+    dark = 
+    /* color: #bf04c2 */
+    /* shown: false */
+    ee.FeatureCollection(
         [ee.Feature(
             ee.Geometry.Point([-16.736849801822398, 64.86942144991252]),
             {
