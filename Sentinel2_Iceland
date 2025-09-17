@@ -834,6 +834,24 @@ var geometry =
             {
               "landcover": 1,
               "system:index": "136"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-16.880111614389044, 63.99420820037249]),
+            {
+              "landcover": 1,
+              "system:index": "137"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-16.90414420716248, 64.02339654128883]),
+            {
+              "landcover": 1,
+              "system:index": "138"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-16.924228588265997, 64.02662945464216]),
+            {
+              "landcover": 1,
+              "system:index": "139"
             })]),
     ice = 
     /* color: #0b4a8b */
