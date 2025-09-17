@@ -852,6 +852,66 @@ var geometry =
             {
               "landcover": 1,
               "system:index": "139"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-16.216059808522072, 63.952374988669234]),
+            {
+              "landcover": 1,
+              "system:index": "140"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-15.488215570240824, 64.1231145967557]),
+            {
+              "landcover": 1,
+              "system:index": "141"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-14.87542846442123, 64.19163593159207]),
+            {
+              "landcover": 1,
+              "system:index": "142"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-15.286608373398739, 64.25720655586116]),
+            {
+              "landcover": 1,
+              "system:index": "143"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-14.818539094420037, 64.33503982074444]),
+            {
+              "landcover": 1,
+              "system:index": "144"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-14.9318356032091, 64.24979217232934]),
+            {
+              "landcover": 1,
+              "system:index": "145"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-16.968525403787584, 64.89122691412848]),
+            {
+              "landcover": 1,
+              "system:index": "146"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-16.971786969949694, 64.88751169172308]),
+            {
+              "landcover": 1,
+              "system:index": "147"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-16.947067731668444, 64.8853260266514]),
+            {
+              "landcover": 1,
+              "system:index": "148"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-16.95839738254735, 64.88991571785705]),
+            {
+              "landcover": 1,
+              "system:index": "149"
             })]),
     ice = 
     /* color: #0b4a8b */
