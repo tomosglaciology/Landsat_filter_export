@@ -6069,16 +6069,26 @@ var awei_nsh = image.expression(
   }
 ).rename('AWEI_nsh');
 
+var smbwi = image.expression(
+    '4*(G - S1) - (0.25*N + 2.75*S2)',
+    {
+      G:  image.select('B3'),
+      S1: image.select('B11'),
+      N:  image.select('B8'),
+      S2: image.select('B12')
+    }
+  ).rename('SMBWI');
 
-return image.addBands([hillshade, mndwi, ndvi, slope]);
+
+return image.addBands([hillshade, slope, awei_nsh, ndvi]);
 }
 
 
-var all = funcs.allSentinel(geometry, 1, 2024, 2024, 6, 6, 1, 31)
+var all = funcs.allSentinel(geometry, 1, 2024, 2024, 6, 6, 1, 30, true, 45)
 //  .filter(ee.Filter.eq('MGRS_TILE', '33XVJ'))
 //  .map(function(image){return image.clip(training)})
   .select('B2', 'B3', 'B4', 'B8', 'B11', 'B12')
-  .map(addIndices)
+.map(addIndices);
 
   print(all)
 Map.centerObject(geometry, 11.5);
@@ -6133,7 +6143,7 @@ var reducing = glcm.map(segtools.reduce_bands);
 var classifier_applied = applying_class.applying_classifier(classifier);
 print(classifier_applied);
 
-var Obia_collection = reducing.map(classifier_applied);
+var Obia_collection = reducing.map(classifier_applied)
 print(Obia_collection);
 
 //Map.addLayer(Obia_collection, {bands: ['classification'], min: 1, max: 6}, 'ClassifiedImage');
