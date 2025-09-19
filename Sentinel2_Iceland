@@ -6084,7 +6084,7 @@ return image.addBands([hillshade, slope, awei_nsh, ndvi]);
 }
 
 
-var all = funcs.allSentinel(geometry, 1, 2024, 2024, 6, 6, 1, 30, true, 45)
+var all = funcs.allSentinel(geometry, 1, 2024, 2024, 6, 6, 1, 30, true, 30)
 //  .filter(ee.Filter.eq('MGRS_TILE', '33XVJ'))
 //  .map(function(image){return image.clip(training)})
   .select('B2', 'B3', 'B4', 'B8', 'B11', 'B12')
