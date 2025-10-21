@@ -1,0 +1,27 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var geometry = 
+    /* color: #d63000 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[14.336915314219771, 78.88524867257016],
+          [14.336915314219771, 78.842013950054],
+          [14.533295929454146, 78.842013950054],
+          [14.533295929454146, 78.88524867257016]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+var funcs = require('users/tomosdanielmorgan/ProgrammingFunctions:Sentinel1');
+
+var all = funcs.allSentinel1(geometry, 2024, 2024, 6, 6, 1, 15,'DESCENDING',['VV', 'VH']);
+print('Sentinel-1 collection:', all);
+print('First image:', all.first());
+
+Map.centerObject(geometry, 10);
+Map.addLayer(all.select('VV').mean(), {min:-25, max:0}, 'Mean VV');
+Map.addLayer(all.select('VH').mean(), {min:-30, max:-5}, 'Mean VH');
+
+
+
