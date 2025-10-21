@@ -16,7 +16,7 @@ var geometry =
 var funcs = require('users/tomosdanielmorgan/ProgrammingFunctions:Sentinel1');
 var batch = require('users/fitoprincipe/geetools:batch');
 
-var all = funcs.allSentinel1(geometry, 2016, 2024, 1, 12, 1, 31,'DESCENDING',['VV', 'VH']);
+var all = funcs.allSentinel1(geometry, 2024, 2024, 6, 8, 1, 31,'DESCENDING',['VV', 'VH']);
 print(all);
 print(all.first());
 
@@ -28,4 +28,26 @@ var vis = {bands:['VV'], min:-25, max:0};
 var frames = all.sort('system:time_start').map(function(img){
   return img.visualize(vis).clip(geometry);
 });
-print(ui.Thumbnail(frames, {region: geometry, framesPerSecond: 3, maxPixels: 1e9}));
+// --- keep your preview unchanged ---
+print(ui.Thumbnail(frames, {
+  region: geometry,
+  framesPerSecond: 3,
+  maxPixels: 1e9
+}));
+
+// --- build export-friendly frames (VV -> dB -> visualize) ---
+var framesDB = all.sort('system:time_start').map(function(img){
+  var vv_dB = img.select('VV').log10().multiply(10);
+  return vv_dB.visualize({min:-25, max:0}).clip(geometry);
+});
+
+// --- export MP4 to Google Drive ---
+Export.video.toDrive({
+  collection: framesDB,                 
+  description: 'S1_VV_timelapse_2024-06_to_2024-08',
+  fileNamePrefix: 'S1_VV_timelapse_2024-06_to_2024-08',
+  framesPerSecond: 3,
+  region: geometry.bounds(),            
+  dimensions: 1080,                     
+  crs: 'EPSG:4326'                      
+});
