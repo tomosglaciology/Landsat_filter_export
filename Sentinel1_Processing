@@ -8,10 +8,10 @@ var geometry =
       }
     ] */
     ee.Geometry.Polygon(
-        [[[163.26343613921756, -73.5028765734143],
-          [163.26343613921756, -74.44880607399297],
-          [168.39405137359256, -74.44880607399297],
-          [168.39405137359256, -73.5028765734143]]], null, false);
+        [[[168.32505099619058, -73.180293542563],
+          [168.32505099619058, -73.65372837677562],
+          [170.17075412119055, -73.65372837677562],
+          [170.17075412119055, -73.180293542563]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 var funcs = require('users/tomosdanielmorgan/ProgrammingFunctions:Sentinel1');
 var batch = require('users/fitoprincipe/geetools:batch');
