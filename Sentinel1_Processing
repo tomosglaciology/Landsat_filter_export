@@ -8,10 +8,10 @@ var geometry =
       }
     ] */
     ee.Geometry.Polygon(
-        [[[13.504784307998285, 79.00311895305765],
-          [13.504784307998285, 78.62159974478108],
-          [15.713036261123285, 78.62159974478108],
-          [15.713036261123285, 79.00311895305765]]], null, false);
+        [[[-5.411547395950464, 53.548534533085345],
+          [-5.411547395950464, 51.3392620064639],
+          [-1.9618403647004645, 51.3392620064639],
+          [-1.9618403647004645, 53.548534533085345]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 var funcs = require('users/tomosdanielmorgan/ProgrammingFunctions:Sentinel1');
 var batch = require('users/fitoprincipe/geetools:batch');
@@ -34,20 +34,3 @@ print(ui.Thumbnail(frames, {
   framesPerSecond: 3,
   maxPixels: 1e9
 }));
-
-// --- build export-friendly frames (VV -> dB -> visualize) ---
-var framesDB = all.sort('system:time_start').map(function(img){
-  var vv_dB = img.select('VV').log10().multiply(10);
-  return vv_dB.visualize({min:-25, max:0}).clip(geometry);
-});
-
-// --- export MP4 to Google Drive ---
-Export.video.toDrive({
-  collection: framesDB,                 
-  description: 'S1_VV_timelapse_2024-06_to_2024-08',
-  fileNamePrefix: 'S1_VV_timelapse_2024-06_to_2024-08',
-  framesPerSecond: 3,
-  region: geometry.bounds(),            
-  dimensions: 1080,                     
-  crs: 'EPSG:4326'                      
-});
