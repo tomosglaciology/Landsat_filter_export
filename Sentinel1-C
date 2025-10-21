@@ -1,0 +1,47 @@
+// ===== SLC: wrapper with same signature =====
+exports.allSentinel1SLC = function (geometry, year1, year2, month1, month2, day1, day2, pass, pols) {
+  return exports.sentinel1SLC(geometry, year1, year2, month1, month2, day1, day2, pass, pols)
+    .sort('system:time_start')
+    .map(function (img) { return img.clip(geometry); });
+};
+
+// ===== SLC: collection builder =====
+exports.sentinel1SLC = function (geometry, year1, year2, month1, month2, day1, day2, pass, pols) {
+  // defaults (== null catches null or undefined)
+  year1  = (year1  == null) ? 2014 : year1;
+  year2  = (year2  == null) ? year1 : year2;
+  month1 = (month1 == null) ? 1 : month1;
+  month2 = (month2 == null) ? month1 : month2;
+
+  var imColl = ee.ImageCollection('COPERNICUS/S1_SLC')
+    .filterBounds(geometry)
+    .filter(ee.Filter.eq('instrumentMode', 'IW'))   // change to 'EW' or 'SM' if you need
+    .filter(ee.Filter.eq('productType', 'SLC'))
+    .filter(ee.Filter.calendarRange(year1, year2, 'year'))
+    .filter(ee.Filter.calendarRange(month1, month2, 'month'));
+
+  // optional day-of-month filter with wrap support (e.g., 25..5)
+  if (day1 != null && day2 != null) {
+    if (day1 <= day2) {
+      imColl = imColl.filter(ee.Filter.calendarRange(day1, day2, 'day_of_month'));
+    } else {
+      var f1 = ee.Filter.calendarRange(day1, 31, 'day_of_month');
+      var f2 = ee.Filter.calendarRange(1, day2, 'day_of_month');
+      imColl = imColl.filter(ee.Filter.or(f1, f2));
+    }
+  }
+
+  if (pass) {
+    imColl = imColl.filter(ee.Filter.eq('orbitProperties_pass', pass)); // 'ASCENDING'|'DESCENDING'
+  }
+
+  if (pols && pols.length) {
+    pols.forEach(function (p) {
+      imColl = imColl.filter(ee.Filter.listContains('transmitterReceiverPolarisation', p));
+    });
+  }
+
+  // NOTE: don't select bands here; SLC is complex and band names differ by subswath.
+  // Return the filtered collection as-is for downstream InSAR/coherence processing.
+  return imColl;
+};
