@@ -1,38 +1,45 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
 var geometry = 
     /* color: #d63000 */
+    /* shown: false */
     /* displayProperties: [
       {
         "type": "rectangle"
       }
     ] */
     ee.Geometry.Polygon(
-        [[[-11.236575820727328, 55.44513075811705],
-          [-11.236575820727328, 51.24187686148456],
-          [-5.347903945727328, 51.24187686148456],
-          [-5.347903945727328, 55.44513075811705]]], null, false);
+        [[[163.26343613921756, -73.5028765734143],
+          [163.26343613921756, -74.44880607399297],
+          [168.39405137359256, -74.44880607399297],
+          [168.39405137359256, -73.5028765734143]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 var funcs = require('users/tomosdanielmorgan/ProgrammingFunctions:Sentinel1');
 var batch = require('users/fitoprincipe/geetools:batch');
 
-var all = funcs.allSentinel1(geometry, 2024, 2024, 6, 8, 1, 31,'DESCENDING',['VV', 'VH']);
-print(all);
-print(all.first());
+var all = funcs.allSentinel1(geometry, 2024, 2024, 1, 12, 1, 31, 'DESCENDING', null);
+
+print('All images:', all.size());
+print('First image:', all.first());
+
+var allHV = all.filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'HV'));
+var allHH = all.filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'HH'));
 
 Map.centerObject(geometry, 10);
-Map.addLayer(all.select('VV').mean(), {min:-25, max:0}, 'Mean VV');
-Map.addLayer(all.select('VH').mean(), {min:-30, max:-5}, 'Mean VH');
 
-//var vis = {bands:['VV'], min:-25, max:0};
-//var frames = all.sort('system:time_start').map(function(img){
-//  return img.visualize(vis).clip(geometry);
-//});
-// --- keep your preview unchanged ---
-//print(ui.Thumbnail(frames, {
-//  region: geometry,
-//  framesPerSecond: 3,
-//  maxPixels: 1e9
-//}));
+Map.addLayer(allHV.select('HV').mean(), {min: -30, max: -5}, 'Mean HV');
+Map.addLayer(allHH.select('HH').mean(), {min: -25, max: 0},  'Mean HH');
+
+var vis = {bands: ['HV'], min: -30, max: -5};
+var frames = allHV.sort('system:time_start').map(function (img) {
+  return img.visualize(vis).clip(geometry);
+});
+
+print(ui.Thumbnail(frames, {
+  region: geometry,
+  framesPerSecond: 4,
+  maxPixels: 1e9
+}));
+
 //var meanVH = all.select('VH').mean();
 
 //Map.addLayer(meanVH, {min:-30, max:-5}, 'Mean VH');
