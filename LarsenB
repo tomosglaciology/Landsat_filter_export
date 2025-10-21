@@ -1,0 +1,30 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var geometry = 
+    /* color: #d63000 */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[161.89746895794195, -75.15112591042151],
+          [161.89746895794195, -75.46320665661452],
+          [163.23780098919198, -75.46320665661452],
+          [163.23780098919198, -75.15112591042151]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+var funcs = require('users/tomosdanielmorgan/ProgrammingFunctions:Sentinels');
+var segtools = require('users/tomosdanielmorgan/Sentinel2_OBIA:SegmentationClassification_Sentinel2');
+var training_class = require('users/tomosdanielmorgan/Sentinel2_OBIA:TrainedClassifier_Sentinel2');
+var applying_class = require('users/tomosdanielmorgan/Sentinel2_OBIA:ApplyingClassifier_Sentinel2');
+var batch = require('users/fitoprincipe/geetools:batch')
+
+var all = funcs.allSentinel(geometry, 3, 2024, 2024, 12, 12, 1, 31, true, 30)
+//  .filter(ee.Filter.eq('MGRS_TILE', '33XVJ'))
+//  .map(function(image){return image.clip(training)})
+  .select('B2', 'B3', 'B4', 'B8', 'B11', 'B12')
+  
+  print(all)
+Map.centerObject(geometry, 9.5);
+
+var ROI= ee.Image('COPERNICUS/S2_HARMONIZED/20241205T140719_20241205T140718_T58CDB').divide(10000)
+Map.addLayer(ROI.first(ROI).select('B8','B4','B3'),{min:0,max:0.4},'InspectionImage')
