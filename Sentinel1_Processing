@@ -1,17 +1,16 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
 var geometry = 
     /* color: #d63000 */
-    /* shown: false */
     /* displayProperties: [
       {
         "type": "rectangle"
       }
     ] */
     ee.Geometry.Polygon(
-        [[[-5.411547395950464, 53.548534533085345],
-          [-5.411547395950464, 51.3392620064639],
-          [-1.9618403647004645, 51.3392620064639],
-          [-1.9618403647004645, 53.548534533085345]]], null, false);
+        [[[-11.236575820727328, 55.44513075811705],
+          [-11.236575820727328, 51.24187686148456],
+          [-5.347903945727328, 51.24187686148456],
+          [-5.347903945727328, 55.44513075811705]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 var funcs = require('users/tomosdanielmorgan/ProgrammingFunctions:Sentinel1');
 var batch = require('users/fitoprincipe/geetools:batch');
@@ -34,16 +33,16 @@ Map.addLayer(all.select('VH').mean(), {min:-30, max:-5}, 'Mean VH');
 //  framesPerSecond: 3,
 //  maxPixels: 1e9
 //}));
-var meanVH = all.select('VH').mean();
+//var meanVH = all.select('VH').mean();
 
-Map.addLayer(meanVH, {min:-30, max:-5}, 'Mean VH');
+//Map.addLayer(meanVH, {min:-30, max:-5}, 'Mean VH');
 
-Export.image.toDrive({
-  image: meanVH,
-  description: 'Cymru',  
-  folder: 'Sentinel1',                    
-  region: geometry,
-  scale: 10,
-  crs: 'EPSG:4326',
-  maxPixels: 1e13
-});
+//Export.image.toDrive({
+//  image: meanVH,
+//  description: 'Cymru',  
+//folder: 'Sentinel1',                    
+//  region: geometry,
+//  scale: 10,
+//  crs: 'EPSG:4326',
+//  maxPixels: 1e13
+//});
