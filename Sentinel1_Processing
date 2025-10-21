@@ -8,10 +8,10 @@ var geometry =
       }
     ] */
     ee.Geometry.Polygon(
-        [[[-16.536925274267283, 64.13156743564805],
-          [-16.536925274267283, 63.98498348722009],
-          [-16.038420635595408, 63.98498348722009],
-          [-16.038420635595408, 64.13156743564805]]], null, false);
+        [[[-5.563753805459206, 53.56795958868604],
+          [-5.563753805459206, 51.30477216958777],
+          [-2.070101461709206, 51.30477216958777],
+          [-2.070101461709206, 53.56795958868604]]], null, false);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 var funcs = require('users/tomosdanielmorgan/ProgrammingFunctions:Sentinel1');
 
@@ -22,5 +22,4 @@ print(all.first());
 Map.centerObject(geometry, 10);
 Map.addLayer(all.select('VV').mean(), {min:-25, max:0}, 'Mean VV');
 Map.addLayer(all.select('VH').mean(), {min:-30, max:-5}, 'Mean VH');
-
 
