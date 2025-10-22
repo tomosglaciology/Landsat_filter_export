@@ -49,3 +49,5 @@ batches.Download.ImageCollection.toDrive(all, 'Landsat_Example', {
   maxPixels: 1e13,
   region: geometry
 });
+
+//If there are any problems or improvements please get in touch!
