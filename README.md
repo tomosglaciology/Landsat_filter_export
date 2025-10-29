@@ -65,8 +65,3 @@ A summary of the filtering functions available in the `funcs` module, and the as
 - [Google Earth Engine](https://earthengine.google.com/)  
 - [fitoprincipe/geetools](https://github.com/fitoprincipe/geetools-code-editor)  
 - [iamdonovan](https://github.com/iamdonovan)
-
----
-
-© 2025 Tomos D. Morgan. All rights reserved.
-
