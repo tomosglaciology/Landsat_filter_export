@@ -39,7 +39,7 @@ Our script uses [`batch`](https://github.com/fitoprincipe/geetools-code-editor/b
 ##  Usage
 
 1. Open the [**Google Earth Engine Code Editor**](https://code.earthengine.google.com/).  
-2. Paste the contents of [`landsat_example`](https://github.com/tomosglaciology/Landsat_Image_Filter/blob/main/Landsat_example) into a new script.  
+2. Paste the contents of [`landsat_example`](https://github.com/tomosglaciology/Landsat_Image_Filter/blob/main/Landsat_example) into a new script or click a direct link to Google Earth Engine above.  
 3. Define your area of interest (AOI) by setting a `geometry` variable.  
 4. Modify data filters and WRS path/row parameters to match your AOI.
 
