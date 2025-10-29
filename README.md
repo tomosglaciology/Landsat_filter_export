@@ -7,7 +7,7 @@ Our script uses [`batch`](https://github.com/fitoprincipe/geetools-code-editor/b
 
 ---
 
-## ✨ Features
+##  Features
 
 - Filters Landsat 4–9 imagery by:
   - Geometry  
@@ -22,7 +22,7 @@ Our script uses [`batch`](https://github.com/fitoprincipe/geetools-code-editor/b
 
 ---
 
-## ⚙️ Requirements
+##  Requirements
 
 - [Google Earth Engine](https://earthengine.google.com/) account  
 - The following Earth Engine user modules:
@@ -33,7 +33,7 @@ Our script uses [`batch`](https://github.com/fitoprincipe/geetools-code-editor/b
 
 ---
 
-## 🚀 Usage
+##  Usage
 
 1. Open the [**Google Earth Engine Code Editor**](https://code.earthengine.google.com/).  
 2. Paste the contents of [`landsat_example`](https://github.com/tomosglaciology/Landsat_Image_Filter/blob/main/Landsat_example) into a new script.  
@@ -42,7 +42,7 @@ Our script uses [`batch`](https://github.com/fitoprincipe/geetools-code-editor/b
 
 ---
 
-## 🧩 Filtering Options with `funcs`
+##  Filtering Options with `funcs`
 
 A summary of the filtering functions available in the `funcs` module, and the associated Landsat data availability:
 
@@ -57,7 +57,7 @@ A summary of the filtering functions available in the `funcs` module, and the as
 | `funcs.Landsat8` | Filters only **Landsat 8** | 2013 – Present |
 | `funcs.Landsat9` | Filters only **Landsat 9** | 2021 – Present |
 
-## 📚 Resources
+##  Resources
 
 - [Google Earth Engine](https://earthengine.google.com/)  
 - [fitoprincipe/geetools](https://github.com/fitoprincipe/geetools-code-editor)  
