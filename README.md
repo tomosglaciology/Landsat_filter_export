@@ -5,6 +5,9 @@ This repository contains a **Google Earth Engine (GEE)** script to filter, visua
 Co-developed with [**iamdonovan**](https://github.com/iamdonovan).  
 Our script uses [`batch`](https://github.com/fitoprincipe/geetools-code-editor/blob/master/batch) produced by [**fitoprincipe**](https://github.com/fitoprincipe).
 
+**Open the script directly in Google Earth Engine:**  
+[https://code.earthengine.google.com/9aa0d9d54eac80b62b687770207727c0](https://code.earthengine.google.com/9aa0d9d54eac80b62b687770207727c0)
+
 ---
 
 ##  Features
