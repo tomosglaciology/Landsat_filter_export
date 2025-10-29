@@ -57,22 +57,6 @@ A summary of the filtering functions available in the `funcs` module, and the as
 | `funcs.Landsat8` | Filters only **Landsat 8** | 2013 – Present |
 | `funcs.Landsat9` | Filters only **Landsat 9** | 2021 – Present |
 
----
-
-## 🛰️ About
-
-A **Google Earth Engine** script to filter, visualise, and batch export Landsat 4–9 Collection 2 Tier 1 TOA multispectral imagery over user-defined areas and time ranges.  
-
-This tool simplifies large-scale Landsat processing for **remote sensing researchers, students, and GIS professionals**.
-
----
-
-## 🧾 Topics
-
-`remote-sensing` • `satellite-imagery` • `batch-script` • `google-earth-engine` • `earth-observation` • `landsat-data` • `batch-export`
-
----
-
 ## 📚 Resources
 
 - [Google Earth Engine](https://earthengine.google.com/)  
